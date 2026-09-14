@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <title>Grim — FadedVeil</title>
+
+  <style>
+    /*=================================================================
+      Grim Reaper palette — near-black void + violet accent, with a
+      faint sickly-green undertone in the shadows for that "reaper's
+      scythe glow" feel.
+    =================================================================*/
+    :root {
+      --grim-bg:        #07050a;
+      --grim-surface:   #0e0a14;
+      --grim-surface-2: #150f1e;
+      --grim-line:      #2a1f38;
+      --grim-text:      #ece6f5;
+      --grim-text-soft: #8b7fa3;
+      --grim-accent:    #8b2fd6;
+      --grim-accent-2:  #5b1a8c;
+      --grim-glow:      #b565ff;
+      --grim-mist:      #3fdca0;   /* faint spectral green, used sparingly */
+
+      --cursor-color: #b565ff;
+      --wp-gutter: clamp(24px, 6vw, 84px);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      cursor: none;
+      background: var(--grim-bg);
+    }
+    body {
+      font-family: 'Manrope', sans-serif;
+      color: var(--grim-text);
+    }
+    /* Desktop/tablet only: lock the page to one screen and hand scrolling
+       over to the horizontal track below. Written mobile-first (as a
+       min-width query) so phones just get normal, native vertical
+       document scrolling with nothing overridden or fought against. */
+    @media (min-width: 761px) {
+      html, body {
+        height: 100vh;
+        overflow: hidden; /* the horizontal scroller owns scrolling */
+        overscroll-behavior: none;
+      }
+    }
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+    h1, h2, h3 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: -.5px;
+    }
+    a { color: inherit; }
+
+    /* faint drifting fog, purely decorative, sits above bg / below content */
+    .wp-grim-fog {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(60% 50% at 15% 20%, rgba(139,47,214,.16), transparent 60%),
+        radial-gradient(50% 40% at 85% 75%, rgba(63,220,160,.05), transparent 60%),
+        radial-gradient(70% 60% at 50% 100%, rgba(91,26,140,.20), transparent 60%);
+    }
+
+    /*=================================================================
+      NAV — fixed, sits above the horizontal scroller, unaffected by
+      the rotated scroll
+    =================================================================*/
+    #wp-grim-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      padding: 20px var(--wp-gutter);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(180deg, rgba(7,5,10,.9) 0%, rgba(7,5,10,0) 100%);
+    }
+    .wp-grim-navlink-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--grim-text-soft);
+      transition: color .18s ease;
+    }
+    .wp-grim-navlink-back:hover { color: var(--grim-text); }
+    .wp-grim-wordmark {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 19px;
+      text-decoration: none;
+      color: var(--grim-text);
+      letter-spacing: .5px;
+    }
+    .wp-grim-wordmark::before {
+      content: '';
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--grim-glow);
+      box-shadow: 0 0 12px 2px var(--grim-glow);
+      margin-right: 9px;
+      vertical-align: middle;
+    }
+
+    /* progress dots — one per panel, shows where you are along the
+       horizontal scroll. Fixed at bottom center. */
+    #wp-grim-dots {
+      position: fixed;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      display: flex;
+      gap: 10px;
+    }
+    .wp-grim-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--grim-line);
+      border: none;
+      padding: 0;
+      cursor: none;
+      transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+    }
+    .wp-grim-dot.is-active {
+      background: var(--grim-glow);
+      box-shadow: 0 0 10px 1px var(--grim-glow);
+      transform: scale(1.25);
+    }
+
+    /* subtle scroll hint, fades out once the user has moved */
+    #wp-grim-hint {
+      position: fixed;
+      bottom: 96px;
+      right: var(--wp-gutter);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--grim-text-soft);
+      transition: opacity .5s ease;
+    }
+    #wp-grim-hint span.wp-grim-arrow {
+      display: inline-block;
+      animation: wpgrimnudge 1.6s ease-in-out infinite;
+    }
+    @keyframes wpgrimnudge {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(6px); }
+    }
+    #wp-grim-hint.is-hidden { opacity: 0; }
+
+    /*=================================================================
+      HORIZONTAL SCROLLER — the "rotated 90°" behaviour: panels sit in
+      a row, the container scrolls on the X axis with snap points.
+      A wheel listener converts normal vertical scroll input into
+      horizontal movement so it behaves like a vertical page turned
+      on its side; trackpad users can also just scroll sideways.
+    =================================================================*/
+    #wp-grim-track {
+      display: block;
+    }
+    #wp-grim-track::-webkit-scrollbar { display: none; }
+    #wp-grim-track { scrollbar-width: none; }
+
+    .wp-grim-panel {
+      width: auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      align-items: flex-start;
+      position: relative;
+      border-bottom: 1px solid var(--grim-line);
+      padding: 120px 24px 70px;
+    }
+
+    @media (min-width: 761px) {
+      #wp-grim-track {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        position: relative;
+        z-index: 1;
+      }
+
+      .wp-grim-panel {
+        flex: 0 0 100vw;
+        width: 100vw;
+        height: 100vh;
+        min-height: 0;
+        scroll-snap-align: start;
+        flex-direction: row;
+        align-items: center;
+        text-align: inherit;
+        overflow: hidden;
+        border-right: 1px solid var(--grim-line);
+        border-bottom: none;
+        padding: 0;
+      }
+    }
+
+    /* ---------- Panel 1 — hero ---------- */
+    .wp-grim-panel--hero {
+      background:
+        radial-gradient(120% 100% at 100% 0%, rgba(139,47,214,.28), transparent 55%),
+        var(--grim-surface);
+      padding: 0 var(--wp-gutter);
+    }
+    .wp-grim-hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--grim-glow);
+      margin-bottom: 22px;
+    }
+    .wp-grim-hero-eyebrow::before {
+      content: '';
+      width: 26px; height: 2px;
+      background: var(--grim-glow);
+    }
+    .wp-grim-panel--hero h1 {
+      font-size: clamp(48px, 8vw, 96px);
+      line-height: .96;
+      margin-bottom: 22px;
+      max-width: 12ch;
+    }
+    .wp-grim-panel--hero p {
+      font-size: clamp(16px, 1.6vw, 19px);
+      line-height: 1.7;
+      color: var(--grim-text-soft);
+      max-width: 46ch;
+      margin: 0 0 34px;
+    }
+    .wp-grim-hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .wp-grim-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14.5px;
+      padding: 15px 28px;
+      border-radius: 999px;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .wp-grim-btn--fill {
+      background: linear-gradient(135deg, var(--grim-accent), var(--grim-accent-2));
+      color: #f6eeff;
+      box-shadow: 0 14px 34px rgba(139,47,214,.4);
+    }
+    .wp-grim-btn--fill:hover { transform: translateY(-3px); }
+    .wp-grim-btn--outline {
+      border: 1.5px solid var(--grim-line);
+      color: var(--grim-text);
+    }
+    .wp-grim-btn--outline:hover { border-color: var(--grim-glow); color: var(--grim-glow); }
+
+    /* ---------- Panel 2 — schedule / designs ---------- */
+    .wp-grim-panel--schedule {
+      background: var(--grim-bg);
+      justify-content: center;
+      padding: 0 var(--wp-gutter);
+      gap: clamp(28px, 4vw, 64px);
+    }
+    .wp-grim-schedule-copy {
+      flex: 0 0 auto;
+      max-width: 320px;
+    }
+    .wp-grim-schedule-copy .wp-grim-hero-eyebrow { color: var(--grim-mist); }
+    .wp-grim-schedule-copy .wp-grim-hero-eyebrow::before { background: var(--grim-mist); }
+    .wp-grim-schedule-copy h2 {
+      font-size: clamp(28px, 3.4vw, 40px);
+      margin-bottom: 16px;
+    }
+    .wp-grim-schedule-copy p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--grim-text-soft);
+    }
+    .wp-grim-schedule-img {
+      max-height: 74vh;
+      width: auto;
+      max-width: 46vw;
+      border-radius: 20px;
+      border: 1px solid var(--grim-line);
+      box-shadow: 0 30px 70px rgba(0,0,0,.6), 0 0 60px rgba(139,47,214,.12);
+    }
+
+    /* ---------- Panel 3 — about / mission ---------- */
+    .wp-grim-panel--about {
+      background:
+        radial-gradient(90% 90% at 0% 100%, rgba(63,220,160,.06), transparent 55%),
+        var(--grim-surface-2);
+      justify-content: center;
+      padding: 0 var(--wp-gutter);
+    }
+    .wp-grim-about-inner {
+      max-width: 620px;
+    }
+    .wp-grim-about-inner p {
+      font-size: clamp(17px, 1.7vw, 20px);
+      line-height: 1.75;
+      color: var(--grim-text);
+      margin: 0 0 22px;
+    }
+    .wp-grim-about-inner p:last-of-type { margin-bottom: 0; }
+    .wp-grim-welcome {
+      color: var(--grim-glow);
+      font-size: clamp(30px, 4vw, 42px);
+      font-family: 'Fraunces', serif;
+      margin: 36px 0 !important;
+      text-shadow: 0 0 30px rgba(181,101,255,.4);
+    }
+
+    /* ---------- Panel 4 — closing / footer ---------- */
+    .wp-grim-panel--end {
+      background: var(--grim-bg);
+      justify-content: center;
+      text-align: center;
+      padding: 0 var(--wp-gutter);
+    }
+    .wp-grim-end-inner { max-width: 520px; }
+    .wp-grim-end-inner .wp-grim-wordmark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 22px;
+    }
+    .wp-grim-end-inner p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--grim-text-soft);
+      margin: 0 0 30px;
+    }
+    .wp-grim-end-footer {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--grim-line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--grim-text-soft);
+    }
+    .wp-grim-end-footer a { text-decoration: none; }
+    .wp-grim-end-footer a:hover { color: var(--grim-text); }
+
+    /*=================================================================
+      Narrow screens (base layout — see the min-width: 761px query
+      above for the desktop horizontal-scroller version): the progress
+      dots and "scroll" hint only make sense for the horizontal
+      scroller, so hide them, and keep the schedule panel stacked.
+    =================================================================*/
+    .wp-grim-schedule-img { max-width: 100%; max-height: none; }
+    @media (max-width: 760px) {
+      #wp-grim-dots, #wp-grim-hint { display: none; }
+    }
+    @media (min-width: 761px) {
+      .wp-grim-panel--schedule { flex-direction: row; }
+      .wp-grim-schedule-img { max-height: 74vh; max-width: 46vw; }
+    }
+
+    /*=================================================================
+      Product promo — floating "click me" widget (self-contained copy,
+      since this page doesn't load the shared styles.css)
+    =================================================================*/
+    #wp-promo-widget {
+        position: fixed;
+        right: 26px;
+        bottom: 26px;
+        z-index: 1200;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        opacity: 0;
+        transform: translateY(50px) scale(.4) rotate(-15deg);
+        animation: wppromo-in .75s cubic-bezier(.34,1.56,.64,1) 1.1s forwards;
+        cursor: pointer;
+    }
+    #wp-promo-widget .wp-promo-icon {
+        position: relative;
+        flex: none;
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: linear-gradient(145deg, #f2cead, #e2a86b);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        box-shadow: 0 10px 26px rgba(0,0,0,.4);
+        transition: transform .18s ease;
+    }
+    #wp-promo-widget .wp-promo-ring {
+        position: absolute;
+        inset: -6px;
+        border-radius: 50%;
+        border: 2px solid rgba(242,206,173,.75);
+        opacity: 0;
+    }
+    #wp-promo-widget.wp-promo-settled .wp-promo-ring {
+        animation: wppromo-pulse 2.2s ease-out infinite;
+    }
+    #wp-promo-widget .wp-promo-label {
+        background: #543029;
+        color: #fdf6e3;
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: .4px;
+        padding: 9px 16px;
+        border-radius: 999px;
+        white-space: nowrap;
+        box-shadow: 0 8px 20px rgba(0,0,0,.35);
+        opacity: 0;
+        transform: translateX(8px);
+        transition: opacity .3s ease, transform .3s ease;
+    }
+    #wp-promo-widget.wp-promo-settled .wp-promo-label {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    #wp-promo-widget:hover .wp-promo-icon {
+        transform: scale(1.08);
+    }
+    @keyframes wppromo-in {
+        0%   { opacity: 0; transform: translateY(50px) scale(.4) rotate(-15deg); }
+        55%  { opacity: 1; transform: translateY(-10px) scale(1.1) rotate(6deg); }
+        75%  { transform: translateY(4px) scale(.96) rotate(-3deg); }
+        100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+    }
+    @keyframes wppromo-pulse {
+        0%   { transform: scale(1);   opacity: .55; }
+        100% { transform: scale(1.5); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        #wp-promo-widget { animation: none; opacity: 1; transform: none; }
+        #wp-promo-widget .wp-promo-ring { animation: none; }
+    }
+    @media (max-width: 480px) {
+        #wp-promo-widget { right: 16px; bottom: 16px; gap: 8px; }
+        #wp-promo-widget .wp-promo-icon { width: 50px; height: 50px; font-size: 22px; }
+        #wp-promo-widget .wp-promo-label { font-size: 11.5px; padding: 7px 12px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas></canvas>
+  <div class="wp-grim-fog"></div>
+
+  <header id="wp-grim-nav">
+    <a href="../index.html" class="wp-grim-navlink-back">
+      <span>←</span> Home
+    </a>
+    <a href="../index.html" class="wp-grim-wordmark">FadedVeil</a>
+  </header>
+
+  <div id="wp-grim-track">
+
+    <!-- Panel 1: hero -->
+    <section class="wp-grim-panel wp-grim-panel--hero">
+      <div>
+        <div class="wp-grim-hero-eyebrow">Esports Organisation</div>
+        <h1>Grim Esports</h1>
+        <p>
+          Grim Esports is a developing organisation that strives for group development and personal
+          growth — built around having fun and competing together, because is it really fun if it's alone?
+        </p>
+        <div class="wp-grim-hero-buttons">
+          <a href="#about" class="wp-grim-btn wp-grim-btn--fill" data-grim-scrollto="about">
+            Enter the shadows
+          </a>
+          <a href="../index.html" class="wp-grim-btn wp-grim-btn--outline">
+            Back to home
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel 2: schedule -->
+    <section class="wp-grim-panel wp-grim-panel--schedule">
+      <div class="wp-grim-schedule-copy">
+        <div class="wp-grim-hero-eyebrow">What do I do</div>
+        <h2>GRM FadedVeil</h2>
+        <p>Streamer and Social Media Manager for Grim Esports — building community, creating content, and keeping the brand alive online.</p>
+      </div>
+      <img class="wp-grim-schedule-img" src="../assets/grim_assets/Pooksie_hub_18.png" alt="Grim Esports weekly stream schedule">
+    </section>
+
+    <!-- Panel 3: about / mission -->
+    <section id="about" class="wp-grim-panel wp-grim-panel--about">
+      <div class="wp-grim-about-inner">
+        <p>
+          The organisation branches out into more than just the competitive gaming field — it focuses on engaging
+          with the community, Grim players, and content creators' personal development. We want to create a place
+          where we can build friendships, develop skills and spark ambition.
+        </p>
+        <p>
+          From the competitive teams to the joy of content creation and community involvement — Grim has it all.
+        </p>
+        <p>
+          We are built upon teamwork, respect, dedication and community, with one simple mission in mind:
+          to support current and upcoming talent within the esports community.
+        </p>
+        <p class="wp-grim-welcome">Welcome to Grim Esports</p>
+      </div>
+    </section>
+
+    <!-- Panel 4: closing -->
+    <section class="wp-grim-panel wp-grim-panel--end">
+      <div class="wp-grim-end-inner">
+        <a href="../index.html" class="wp-grim-wordmark">FadedVeil</a>
+        <p>Enter the shadows. Build your legacy and become a supporter of the Grim organisation.</p>
+        <div class="wp-grim-end-footer">
+          <span>© 2026 FadedVeil.</span>
+          <a href="../index.html">Back to home</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div id="wp-grim-dots"></div>
+  <div id="wp-grim-hint"><span>Scroll</span><span class="wp-grim-arrow">→</span></div>
+
+  <script>
+    (function () {
+      const track = document.getElementById('wp-grim-track');
+      const panels = Array.from(track.querySelectorAll('.wp-grim-panel'));
+      const dotsWrap = document.getElementById('wp-grim-dots');
+      const hint = document.getElementById('wp-grim-hint');
+
+      // build progress dots
+      const dots = panels.map((panel, i) => {
+        const b = document.createElement('button');
+        b.className = 'wp-grim-dot';
+        b.setAttribute('aria-label', 'Go to section ' + (i + 1));
+        b.addEventListener('click', () => {
+          track.scrollTo({ left: panel.offsetLeft, behavior: 'smooth' });
+        });
+        dotsWrap.appendChild(b);
+        return b;
+      });
+
+      function isMobileLayout() {
+        return window.matchMedia('(max-width: 760px)').matches;
+      }
+
+      function updateDots() {
+        if (isMobileLayout()) return;
+        const idx = Math.round(track.scrollLeft / window.innerWidth);
+        dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+      }
+      updateDots();
+      track.addEventListener('scroll', updateDots, { passive: true });
+
+      // convert normal vertical scroll input (mouse wheel / trackpad-up-down)
+      // into a jump to the next/previous section, so one scroll gesture =
+      // one section change (like paging through the vertical site, just
+      // sideways). A short lockout stops a single gesture firing many
+      // times. Trackpad swipes that are already mostly horizontal are
+      // left alone so natural sideways scrolling still works.
+      let wheelLocked = false;
+      track.addEventListener('wheel', (e) => {
+        if (isMobileLayout()) return;
+
+        const horizontalIntent = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+        if (horizontalIntent) return; // let native horizontal scroll happen
+
+        e.preventDefault();
+        if (wheelLocked) return;
+        if (Math.abs(e.deltaY) < 4) return; // ignore tiny/noise events
+
+        const idx = Math.round(track.scrollLeft / window.innerWidth);
+        const dir = e.deltaY > 0 ? 1 : -1;
+        const next = Math.max(0, Math.min(panels.length - 1, idx + dir));
+
+        if (next !== idx) {
+          wheelLocked = true;
+          track.scrollTo({ left: panels[next].offsetLeft, behavior: 'smooth' });
+          setTimeout(() => { wheelLocked = false; }, 700);
+        }
+      }, { passive: false });
+
+      // keyboard left/right/arrow navigation between panels
+      window.addEventListener('keydown', (e) => {
+        if (isMobileLayout()) return;
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const idx = Math.round(track.scrollLeft / window.innerWidth);
+        const next = e.key === 'ArrowRight' ? Math.min(idx + 1, panels.length - 1) : Math.max(idx - 1, 0);
+        track.scrollTo({ left: panels[next].offsetLeft, behavior: 'smooth' });
+      });
+
+      // fade the scroll hint once the user has moved
+      track.addEventListener('scroll', () => {
+        if (track.scrollLeft > 40) hint.classList.add('is-hidden');
+      }, { passive: true });
+
+      // smooth-scroll for the in-page "Enter the shadows" link
+      document.querySelectorAll('[data-grim-scrollto]').forEach(a => {
+        a.addEventListener('click', (e) => {
+          const target = document.getElementById(a.getAttribute('data-grim-scrollto'));
+          if (target) {
+            e.preventDefault();
+            track.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
+          }
+        });
+      });
+    })();
+  </script>
+
+  <!-- ===== PRODUCT PROMO WIDGET ===== -->
+  <a href="promo.html" id="wp-promo-widget" aria-label="Check out our new product">
+    <span class="wp-promo-icon">
+      <span class="wp-promo-ring"></span>
+      <img src="../assets/promo_assets/icon.png" alt="">
+    </span>
+    <span class="wp-promo-label">Click me</span>
+  </a>
+
+  <script src="../scripts/cursor.js" type="module"></script>
+  <script src="../scripts/promo-widget.js" type="module"></script>
+
+</body>
+
+</html>

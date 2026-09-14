@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../styles-info.css">
+
+  <!-- page-specific palette override — edit these to taste -->
+  <style>
+    :root {
+      --info-bg:          #f6ecec;
+      --info-surface:     #fffaf8;
+      --info-surface-alt: #f3e2e0;
+      --info-text:        #4a2634;
+      --info-text-soft:   #8c5b68;
+      --info-accent:      #e8b4bc;
+      --info-accent-text: #4a2634;
+      --info-border:      #d9b8bd;
+      --info-shadow:      rgba(74, 38, 52, .16);
+
+      --cursor-color: #e8b4bc; /* matches this page's accent */
+    }
+
+    /*=================================================================
+      Product promo — floating "click me" widget (self-contained copy,
+      since this page doesn't load the shared styles.css)
+    =================================================================*/
+    #wp-promo-widget {
+        position: fixed;
+        right: 26px;
+        bottom: 26px;
+        z-index: 1200;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        opacity: 0;
+        transform: translateY(50px) scale(.4) rotate(-15deg);
+        animation: wppromo-in .75s cubic-bezier(.34,1.56,.64,1) 1.1s forwards;
+        cursor: pointer;
+    }
+    #wp-promo-widget .wp-promo-icon {
+        position: relative;
+        flex: none;
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: linear-gradient(145deg, #f2cead, #e2a86b);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        box-shadow: 0 10px 26px rgba(0,0,0,.4);
+        transition: transform .18s ease;
+    }
+    #wp-promo-widget .wp-promo-ring {
+        position: absolute;
+        inset: -6px;
+        border-radius: 50%;
+        border: 2px solid rgba(242,206,173,.75);
+        opacity: 0;
+    }
+    #wp-promo-widget.wp-promo-settled .wp-promo-ring {
+        animation: wppromo-pulse 2.2s ease-out infinite;
+    }
+    #wp-promo-widget .wp-promo-label {
+        background: #543029;
+        color: #fdf6e3;
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: .4px;
+        padding: 9px 16px;
+        border-radius: 999px;
+        white-space: nowrap;
+        box-shadow: 0 8px 20px rgba(0,0,0,.35);
+        opacity: 0;
+        transform: translateX(8px);
+        transition: opacity .3s ease, transform .3s ease;
+    }
+    #wp-promo-widget.wp-promo-settled .wp-promo-label {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    #wp-promo-widget:hover .wp-promo-icon {
+        transform: scale(1.08);
+    }
+    @keyframes wppromo-in {
+        0%   { opacity: 0; transform: translateY(50px) scale(.4) rotate(-15deg); }
+        55%  { opacity: 1; transform: translateY(-10px) scale(1.1) rotate(6deg); }
+        75%  { transform: translateY(4px) scale(.96) rotate(-3deg); }
+        100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+    }
+    @keyframes wppromo-pulse {
+        0%   { transform: scale(1);   opacity: .55; }
+        100% { transform: scale(1.5); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        #wp-promo-widget { animation: none; opacity: 1; transform: none; }
+        #wp-promo-widget .wp-promo-ring { animation: none; }
+    }
+    @media (max-width: 480px) {
+        #wp-promo-widget { right: 16px; bottom: 16px; gap: 8px; }
+        #wp-promo-widget .wp-promo-icon { width: 50px; height: 50px; font-size: 22px; }
+        #wp-promo-widget .wp-promo-label { font-size: 11.5px; padding: 7px 12px; }
+    }
+  </style>
+
+  <title>PPP Tournaments — FadedVeil</title>
+</head>
+
+<body>
+
+  <canvas></canvas>
+
+  <div class="wp-info-main">
+
+    <header id="wp-info-navheader">
+      <div id="wp-info-navbar">
+        <a href="../index.html" class="wp-info-navlink-back">
+          <span>←</span>
+          Home
+        </a>
+        <a href="../index.html" class="wp-info-wordmark">FadedVeil</a>
+      </div>
+    </header>
+
+    <!-- two image tiles above the title -->
+    <div class="wp-info-top-images">
+      <div class="wp-info-top-imageL" style="background-image: url('../assets/ppp_assets/ppp_logo.png');"></div>
+      <div class="wp-info-top-imageR" style="background-image: url('../assets/ppp_assets/Pooksie_hub_9.png');"></div>
+    </div>
+
+    <section class="wp-info-hero wp-info-hero--plain">
+      <div class="wp-info-eyebrow">
+        <span class="wp-info-eyebrow-dash"></span>
+        FadedVeil | Co-Owner and HR Manager
+      </div>
+      <h1>PPP Tournaments</h1>
+      <p class="wp-info-hero-lead">
+        𝐀𝐭 𝐏𝐨𝐰𝐞𝐫𝐩𝐮𝐟𝐟 𝐏𝐨𝐭𝐚𝐭𝐨𝐞𝐬, 𝐰𝐞 𝐛𝐞𝐥𝐢𝐞𝐯𝐞 𝐠𝐚𝐦𝐢𝐧𝐠 𝐢𝐬 𝐚𝐛𝐨𝐮𝐭 𝐦𝐨𝐫𝐞 𝐭𝐡𝐚𝐧 𝐰𝐢𝐧𝐧𝐢𝐧𝐠. 🎀💕🥔
+      </p>
+    </section>
+
+    <div class="wp-info-body">
+
+      <div class="wp-info-section wp-info-card">
+        <h2>Our Goal</h2>
+        <p>
+          🎮 - It's about the laughs after a failed clutch, the hype of an incredible play, meeting new people, and making memories you'll talk about long after the tournament ends.
+        </p>
+        <p>
+          🎮 - We host community tournaments that put fun, sportsmanship, and friendship first, while giving players, casters, and creators a place to grow.
+        </p>
+        <p>
+          𝘕𝘰 𝘦𝘨𝘰𝘴. 𝘕𝘰 𝘳𝘢𝘯𝘬 𝘴𝘩𝘢𝘮𝘪𝘯𝘨. 𝘑𝘶𝘴𝘵 𝘧𝘶𝘯, 𝘧𝘳𝘪𝘦𝘯𝘥𝘭𝘺 𝘣𝘢𝘯𝘵𝘦𝘳, 𝘢𝘯𝘥 𝘶𝘯𝘧𝘰𝘳𝘨𝘦𝘵𝘵𝘢𝘣𝘭𝘦 𝘮𝘰𝘮𝘦𝘯𝘵𝘴.
+        </p>
+      </div>
+
+    </div>
+
+    <footer class="wp-info-footer">
+      <span>© 2026 FadedVeil.</span>
+      <a href="../index.html">Back to home</a>
+    </footer>
+
+  </div>
+
+  <script type="module">
+    // Custom build of tholman/cursor-effects' fairyDustCursor — the library
+    // only exposes a `colors` option, not size, so this is the same effect
+    // with the sparkle font bumped up (21px -> 38px) for bigger particles.
+    function fairyDustCursor(options) {
+      const colors = (options && options.colors) || ["#D61C59", "#E7D84B", "#1B8798"];
+      const el = (options && options.element) || document.body;
+      let width = window.innerWidth, height = window.innerHeight;
+      const cursor = { x: width / 2, y: width / 2 };
+      const lastPos = { x: width / 2, y: width / 2 };
+      const particles = [];
+      const canvImages = [];
+      let canvas, context, animationFrame;
+      const SPARKLE_SIZE = "38px serif"; // bumped up from the library default of 21px
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const isMobile = window.matchMedia("(max-width: 760px), (hover: none), (pointer: coarse)");
+
+      function init() {
+        if (reduceMotion.matches || isMobile.matches) {
+          return false;
+        }
+        canvas = document.createElement("canvas");
+        context = canvas.getContext("2d");
+        canvas.style.top = "0px";
+        canvas.style.left = "0px";
+        canvas.style.pointerEvents = "none";
+        if (options && options.element) {
+          canvas.style.position = "absolute";
+          el.appendChild(canvas);
+          canvas.width = el.clientWidth;
+          canvas.height = el.clientHeight;
+        } else {
+          canvas.style.position = "fixed";
+          el.appendChild(canvas);
+          canvas.width = width;
+          canvas.height = height;
+        }
+        context.font = SPARKLE_SIZE;
+        context.textBaseline = "middle";
+        context.textAlign = "center";
+
+        colors.forEach((color) => {
+          const measurements = context.measureText("*");
+          const cvs = document.createElement("canvas");
+          const ctx = cvs.getContext("2d");
+          cvs.width = measurements.width;
+          cvs.height = measurements.actualBoundingBoxAscent + measurements.actualBoundingBoxDescent;
+          ctx.fillStyle = color;
+          ctx.textAlign = "center";
+          ctx.font = SPARKLE_SIZE;
+          ctx.textBaseline = "middle";
+          ctx.fillText("*", cvs.width / 2, measurements.actualBoundingBoxAscent);
+          canvImages.push(cvs);
+        });
+
+        el.addEventListener("mousemove", onMouseMove);
+        el.addEventListener("touchmove", onTouchMove, { passive: true });
+        el.addEventListener("touchstart", onTouchMove, { passive: true });
+        window.addEventListener("resize", onWindowResize);
+        loop();
+      }
+
+      function onWindowResize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        if (options && options.element) {
+          canvas.width = el.clientWidth;
+          canvas.height = el.clientHeight;
+        } else {
+          canvas.width = width;
+          canvas.height = height;
+        }
+      }
+
+      function onTouchMove(e) {
+        if (e.touches.length > 0) {
+          for (let i = 0; i < e.touches.length; i++) {
+            addParticle(e.touches[i].clientX, e.touches[i].clientY, canvImages[Math.floor(Math.random() * canvImages.length)]);
+          }
+        }
+      }
+
+      function onMouseMove(e) {
+        window.requestAnimationFrame(() => {
+          if (options && options.element) {
+            const rect = el.getBoundingClientRect();
+            cursor.x = e.clientX - rect.left;
+            cursor.y = e.clientY - rect.top;
+          } else {
+            cursor.x = e.clientX;
+            cursor.y = e.clientY;
+          }
+          if (Math.hypot(cursor.x - lastPos.x, cursor.y - lastPos.y) > 1.5) {
+            addParticle(cursor.x, cursor.y, canvImages[Math.floor(Math.random() * canvImages.length)]);
+            lastPos.x = cursor.x;
+            lastPos.y = cursor.y;
+          }
+        });
+      }
+
+      function addParticle(x, y, img) {
+        particles.push(new Particle(x, y, img));
+      }
+
+      function updateParticles() {
+        if (particles.length === 0) return;
+        context.clearRect(0, 0, width, height);
+        for (let i = 0; i < particles.length; i++) particles[i].update(context);
+        for (let i = particles.length - 1; i >= 0; i--) if (particles[i].lifeSpan < 0) particles.splice(i, 1);
+        if (particles.length === 0) context.clearRect(0, 0, width, height);
+      }
+
+      function loop() {
+        updateParticles();
+        animationFrame = requestAnimationFrame(loop);
+      }
+
+      function destroy() {
+        canvas.remove();
+        cancelAnimationFrame(animationFrame);
+        el.removeEventListener("mousemove", onMouseMove);
+        el.removeEventListener("touchmove", onTouchMove);
+        el.removeEventListener("touchstart", onTouchMove);
+        window.removeEventListener("resize", onWindowResize);
+      }
+
+      function Particle(x, y, canv) {
+        this.initialLifeSpan = Math.floor(30 * Math.random() + 60);
+        this.lifeSpan = this.initialLifeSpan;
+        this.velocity = { x: (Math.random() < 0.5 ? -1 : 1) * (Math.random() / 2), y: 0.7 * Math.random() + 0.9 };
+        this.position = { x, y };
+        this.canv = canv;
+        this.update = function (ctx) {
+          this.position.x += this.velocity.x;
+          this.position.y += this.velocity.y;
+          this.lifeSpan--;
+          this.velocity.y += 0.02;
+          const scale = Math.max(this.lifeSpan / this.initialLifeSpan, 0);
+          ctx.drawImage(
+            this.canv,
+            this.position.x - (this.canv.width / 2) * scale,
+            this.position.y - this.canv.height / 2,
+            this.canv.width * scale,
+            this.canv.height * scale
+          );
+        };
+      }
+
+      reduceMotion.onchange = () => { reduceMotion.matches ? destroy() : init(); };
+      init();
+      return { destroy };
+    }
+
+    new fairyDustCursor({
+      colors: [
+        "#e8b4bc", "#f3e2e0", "#ffe4e9", "#ffffff", // light blush tones
+        "#7a2436", "#4a2634", "#8c5b68"              // darker plum/maroon tones for contrast
+      ]
+    });
+  </script>
+
+  <!-- ===== PRODUCT PROMO WIDGET ===== -->
+  <a href="promo.html" id="wp-promo-widget" aria-label="Check out our new product">
+    <span class="wp-promo-icon">
+      <span class="wp-promo-ring"></span>
+      <img src="../assets/promo_assets/icon.png" alt="">
+    </span>
+    <span class="wp-promo-label">Click me</span>
+  </a>
+
+  <script src="../scripts/promo-widget.js" type="module"></script>
+
+</body>
+
+</html>

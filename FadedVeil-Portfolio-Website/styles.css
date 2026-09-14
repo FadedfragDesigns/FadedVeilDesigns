@@ -1,0 +1,1590 @@
+/*---Tokens---*/
+:root {
+    --wp-gutter: clamp(24px, 6vw, 84px);
+    --cursor-color: #543029; /* espresso */
+}
+
+
+/*---Page---*/
+* {
+    box-sizing: border-box;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    cursor: none;
+}
+body {
+    background: #f3e8d6;
+}
+
+#wp-main,
+.wp-main {
+    position: relative;
+    background: #fdf6e3;
+    color: #543029;
+    font-family: 'Manrope', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+.wp-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: wprise .85s cubic-bezier(.2, .7, .3, 1) both;
+}
+.wp-reveal.wp-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes wprise {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+
+
+/*=================================================================
+  Reusable components (shared by pages)
+=================================================================*/
+
+/*---wordmark---*/
+.wp-wordmark {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 1.5px;
+}
+/* Fredoka display type for headings & big numbers */
+.wp-heading {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+}
+
+/*---Section eyebrow label (dash + caption)---*/
+.wp-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #89645f;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+}
+.wp-eyebrow-dash {
+    width: 22px;
+    height: 2px;
+    background: #89645f;
+    border-radius: 2px;
+}
+
+/*---Pill buttons---*/
+.wp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 999px;
+}
+.wp-btn--dark   { background: #543029; color: #fdf6e3; }
+.wp-btn--yellow { background: #f2cead; color: #543029; }
+.wp-btn--glass  { background: rgba(255,255,255,.85); color: #543029; }
+
+/* outlined pill ("View all") */
+.wp-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: #543029;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1.5px solid #c6b1a3;
+    padding: 11px 20px;
+    border-radius: 999px;
+    transition: background .16s ease;
+}
+.wp-btn-outline:hover {
+    background: #f5ecdf;
+}
+
+/* per-button sizing built on .wp-btn */
+.wp-cta-about    { padding: 14px 26px; font-size: 15px; transition: transform .18s ease; }
+.wp-cta-about:hover { transform: translateY(-3px); }
+.wp-cta-wishlist { padding: 16px 28px; font-weight: 700; font-size: 15.5px; box-shadow: 0 12px 28px rgba(84,48,41,.3); }
+.wp-cta-trailer  { gap: 9px; padding: 15px 24px; font-size: 15px; }
+.wp-cta-navwish  { padding: 9px 20px; font-weight: 700; font-size: 14px; }
+/* full-width buy button keeps its own block layout */
+.wp-cta-buy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    text-decoration: none;
+    background: #f2cead;
+    color: #543029;
+    padding: 15px;
+    margin-top: 22px;
+    font-weight: 700;
+    font-size: 15px;
+    border-radius: 999px;
+    box-shadow: 0 10px 24px rgba(242,206,173,.4);
+}
+
+/*---Small round icon badge (arrows / play glyphs)---*/
+.wp-ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+.wp-ico--yellow { background: #f2cead; color: #543029; }
+.wp-ico--dark   { background: #543029; color: #f2cead; }
+.wp-ico--light  { background: #f5ecdf; }
+.wp-ico--ring   { border: 1.5px solid rgba(253,246,227,.7); }
+.wp-ico--22 { width: 22px; height: 22px; font-size: 11px; }
+.wp-ico--24 { width: 24px; height: 24px; font-size: 12px; }
+.wp-ico--26 { width: 26px; height: 26px; font-size: 13px; }
+
+
+/*=================================================================
+  Hero (home page)
+=================================================================*/
+
+#wp-hero {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    min-height: 620px;
+    overflow: hidden;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+#wp-hero-bg {
+    position: absolute;
+    inset: -5% -5% -5% -5%;
+    background-image: url('assets/Hero.png');
+    background-size: cover;
+    background-position: 72% center;
+    will-change: transform;
+    transform: scale(1.06);
+}
+
+
+/* legibility scrims */
+.wp-hero-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, rgba(61,33,28,.62) 0%, rgba(61,33,28,.28) 34%, rgba(61,33,28,0) 60%);
+}
+.wp-hero-scrim-btm {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 48%;
+    background: linear-gradient(to top, rgba(61,33,28,.66), rgba(61,33,28,0));
+}
+
+#wp-hero-text {
+    position: relative;
+    z-index: 2;
+    padding: 0 var(--wp-gutter) clamp(100px, 9vh, 110px);
+    max-width: 760px;
+    will-change: transform, opacity;
+}
+.wp-hero-textin {
+    animation-delay: .25s;
+    animation: wprise .85s cubic-bezier(.2, .7, .3, 1) both;
+}
+.wp-herotext1 {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.35);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #fdf6e3;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    padding: 7px 15px;
+    border-radius: 999px;
+    margin-bottom: 22px;
+}
+#wp-herodot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f2cead;
+    box-shadow: 0 0 0 4px rgba(242,206,173,.3);
+}
+#wp-hero h1 {
+    animation-delay: .4s;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(48px, 7.4vw, 102px);
+    line-height: .95;
+    margin: 0 0 22px;
+    color: #fdf6e3;
+    text-shadow: 0 2px 30px rgba(61,33,28,.35);
+    letter-spacing: -1px;
+}
+#wp-hero p {
+    animation-delay: .55s;
+    margin: 0 0 30px;
+    max-width: 440px;
+    font-size: 17px;
+    line-height: 1.55;
+    color: rgba(253,246,227,.9);
+    text-shadow: 0 1px 12px rgba(61,33,28,.4);
+}
+
+.wp-hero-buttons {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    animation-delay: .7s;
+}
+#wp-hero-button1 {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    background: #f2cead;
+    color: #543029;
+    text-decoration: none;
+    padding: 16px 28px;
+    font-weight: 700;
+    font-size: 15.5px;
+    border-radius: 999px;
+    box-shadow: 0 10px 26px rgba(242,206,173,.45);
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+#wp-hero-button1:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 34px rgba(242,206,173,.55);
+}
+#wp-hero-button1::selection {
+    color: #543029;
+    border-radius: 999px;
+    background: #f2cead;
+}
+#wp-hero-button2 {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(255,255,255,.14);
+    border: 1.5px solid rgba(255,255,255,.55);
+    color: #fdf6e3;
+    text-decoration: none;
+    padding: 15px 24px;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: background .18s ease;
+}
+#wp-hero-button2:hover {
+    background: rgba(255,255,255,.26);
+}
+#wp-hero-button2::selection {
+    color: #fdf6e3;
+    border-radius: 999px;
+    background: rgba(255,255,255,.55);
+}
+
+#wp-hero-scrollprompt {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: rgba(253,246,227,.85);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    animation: wpbob 1.9s ease-in-out infinite;
+}
+
+
+/*=================================================================
+  Header capsule / nav (shared by both pages)
+=================================================================*/
+#wp-navheader {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 40;
+    width: min(1080px, calc(100% - 28px));
+    animation: wpdrop .7s cubic-bezier(.2,.7,.3,1) .15s both;
+}
+#wp-navbar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 16px;
+    background: rgba(255,255,255,.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,.7);
+    border-radius: 28px;
+    padding: 9px 16px;
+    box-shadow: 0 10px 30px rgba(84,48,41,.12);
+}
+#wp-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-self: center;
+    text-decoration: none;
+    color: #543029;
+}
+.wp-nav{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.wp-navL {
+    justify-self: start;
+}
+.wp-navR {
+    justify-self: end;
+}
+.wp-navbutton {
+    text-decoration: none;
+    color: #89645f;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 999px;
+}
+.wp-navbutton:hover {
+    background: #f5ecdf;
+    color: #543029;
+}
+.wp-navbutton::selection {
+    color: #543029;
+    border-radius: 999px;
+    background: #f2cead;
+}
+/* game-page nav: "All games" back link */
+.wp-navlink-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+    color: #543029;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/*=================================================================
+  Games section + cards (home page)
+=================================================================*/
+/*---Horizontal scroller (games + screenshots)---*/
+.wp-scroll {
+    display: flex;
+    overflow-x: auto;
+}
+.wp-scroll::-webkit-scrollbar {
+    height: 0;
+}
+.wp-games-scroller {
+    gap: 24px;
+    padding: 16px var(--wp-gutter) 28px;
+    cursor: grab;
+    user-select: none;
+}
+.wp-games-scroller-inner {
+    display: flex;
+    gap: 24px;
+    padding: 16px var(--wp-gutter) 28px;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+/* while actively dragging the row, show the grabbing cursor */
+.wp-games-scroller-inner.is-grabbing {
+    cursor: grabbing;
+}
+
+#wp-games {
+    position: relative;
+    z-index: 2;
+    margin-top: -8vh;
+    background: #fdf6e3;
+    border-radius: 44px 44px 0 0;
+    box-shadow: 0 -22px 50px rgba(84,48,41,.16);
+    padding: 14px 0 96px;
+}
+#wp-games-bar {
+    width: 56px;
+    height: 5px;
+    background: #c6b1a3;
+    border-radius: 999px;
+    margin: 16px auto 0;
+}
+#wp-games h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(40px, 5.5vw, 68px);
+    line-height: .92;
+    margin: 0;
+    letter-spacing: -1px;
+}
+
+.wp-games-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 34px var(--wp-gutter) 22px;
+    flex-wrap: wrap;
+}
+.wp-games-head-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.wp-games-meta {
+    font-size: 13px;
+    color: #8a7565;
+    font-weight: 500;
+}
+
+/* game card */
+.wp-card {
+    flex: 0 0 600px;
+    text-decoration: none;
+    color: #543029;
+    background: #fdf6e3;
+    border-radius: 28px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 14px 34px rgba(84,48,41,.1);
+    border: 1px solid #f3e8d6;
+    transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease;
+}
+.wp-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 26px 50px rgba(84,48,41,.18);
+}
+.wp-card-link {
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+.wp-card-art {
+    position: relative;
+    aspect-ratio: 16 / 10.5;
+
+    background: rgb(111,74,68);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    display: flex;
+    align-items: flex-end;
+    padding: 16px;
+    overflow: hidden;
+}
+
+/* Image-only design cards: the art fills the whole card, no body/text below it */
+.wp-design-card {
+    padding: 0;
+}
+.wp-design-card .wp-card-art {
+    aspect-ratio: 16 / 9;
+    cursor: zoom-in;
+    transition: transform .3s ease;
+}
+.wp-design-card:hover .wp-card-art {
+    transform: scale(1.03);
+}
+.wp-card-tag {
+    position: relative;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #543029;
+    background: rgba(255,255,255,.82);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: 6px 12px;
+    border-radius: 999px;
+}
+.wp-card-body {
+    padding: 20px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    flex: 1;
+}
+.wp-card-title {
+    font-size: 21px;
+    letter-spacing: -.3px;
+}
+.wp-card-desc {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #89645f;
+    flex: 1;
+}
+.wp-card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding-top: 15px;
+    border-top: 1px solid #f5ecdf;
+}
+.wp-card-year {
+    font-size: 13px;
+    color: #a68f7c;
+    font-weight: 600;
+}
+.wp-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #dba876;
+}
+
+
+/*=================================================================
+  About section (home page)
+=================================================================*/
+.wp-about-wrap {
+    margin-top: 78px;
+    padding: 0 var(--wp-gutter);
+}
+#wp-about-grid {
+    background: #f3e8d6;
+    border-radius: 40px;
+    padding: clamp(34px, 5vw, 64px);
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+}
+.wp-about-title {
+    font-size: clamp(34px, 4.4vw, 56px);
+    line-height: 1;
+    margin: 0px;
+    letter-spacing: -1px;
+}
+.wp-about-lead {
+    margin: 18px 0 16px;
+    font-size: 17px;
+    line-height: 1.65;
+    color: #89645f;
+    max-width: 52ch;
+}
+.wp-about-text {
+    margin: 0 0 28px;
+    font-size: 16px;
+    line-height: 1.65;
+    color: #89645f;
+    max-width: 52ch;
+}
+.wp-about-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+#wp-about-photo {
+    aspect-ratio: 4 / 3;
+    border-radius: 28px;
+    overflow: hidden;
+    background: url('assets/aboutphoto.jpg') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 16px 36px rgba(137,100,95,.28);
+}
+.wp-about-emoji {
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+}
+.wp-stat-row {
+    display: flex;
+    gap: 16px;
+}
+.wp-stat {
+    flex: 1;
+    background: #fff;
+    border-radius: 22px;
+    padding: 18px 20px;
+    box-shadow: 0 10px 24px rgba(84,48,41,.08);
+}
+.wp-stat-num {
+    font-size: 38px;
+    line-height: 1;
+}
+.wp-stat-num--amber { color: #dba876; }
+.wp-stat-num--green { color: #89645f; }
+.wp-stat-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #8a7565;
+    margin-top: 4px;
+    letter-spacing: .5px;
+}
+
+
+/*=================================================================
+  Footer (home page)
+=================================================================*/
+.wp-footer {
+    position: relative;
+    z-index: 2;
+    background: #3d211c;
+    color: #f3e8d6;
+    border-radius: 44px 44px 0 0;
+    margin-top: -28px;
+    padding: clamp(48px, 6vw, 80px) var(--wp-gutter) 40px;
+}
+.wp-footer-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,.14);
+}
+.wp-footer-brand {
+    max-width: 320px;
+}
+.wp-footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+.wp-footer-tag {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(243,232,214,.7);
+}
+.wp-footer-cols {
+    display: flex;
+    gap: clamp(36px, 6vw, 80px);
+    flex-wrap: wrap;
+}
+.wp-footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+.wp-footer-coltitle {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #d9b79a;
+    margin-bottom: 3px;
+}
+.wp-footer-link {
+    text-decoration: none;
+    color: rgba(243,232,214,.85);
+    font-size: 14.5px;
+}
+.wp-footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-top: 24px;
+    font-size: 13px;
+    color: rgba(243,232,214,.55);
+}
+.wp-footer-legal {
+    display: flex;
+    gap: 22px;
+}
+.wp-footer-legal a {
+    color: rgba(243,232,214,.55);
+    text-decoration: none;
+}
+.wp-footer-link:hover,
+.wp-footer-legal a:hover {
+    color: #f2cead;
+}
+
+
+/*=================================================================
+  Game detail page (pagegame.html)
+=================================================================*/
+
+/* entrance animation for hero items */
+.wp-hero-in {
+    animation: wprise .85s cubic-bezier(.2, .7, .3, 1) both;
+}
+.wp-delay-1 { animation-delay: .25s; }
+.wp-delay-2 { animation-delay: .4s; }
+.wp-delay-3 { animation-delay: .55s; }
+
+/* hero */
+.wp-game-hero {
+    position: relative;
+    height: 74vh;
+    min-height: 460px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: var(--art);
+}
+/* parallax background layer — translated on scroll by pagegame.js.
+   Mirrors #wp-hero-bg: oversized + scaled so the translate never reveals edges */
+#wp-game-hero-bg {
+    position: absolute;
+    inset: -5% -5% -5% -5%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    will-change: transform;
+    transform: scale(1.06);
+}
+.wp-game-hero-scrim {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 70%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+}
+.wp-game-hero-inner {
+    position: relative;
+    z-index: 2;
+    padding: 0 var(--wp-gutter) clamp(40px, 6vh, 64px);
+    max-width: 860px;
+}
+.wp-game-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(255,255,255,.85);
+    color: #543029;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 7px 15px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+}
+.wp-game-title {
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: .94;
+    margin: 0 0 22px;
+    color: #fdf6e3;
+    letter-spacing: -1.5px;
+    text-shadow: 0 2px 26px rgba(61,33,28,.3);
+}
+.wp-game-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+/* overview + details grid */
+#wp-detail-grid {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: clamp(28px, 4vw, 56px);
+    padding: clamp(44px, 6vw, 72px) var(--wp-gutter);
+    align-items: start;
+}
+.wp-game-lead {
+    font-size: 19px;
+    line-height: 1.65;
+    margin: 0 0 18px;
+    max-width: 56ch;
+    color: #3d211c;
+}
+.wp-game-text {
+    font-size: 16px;
+    line-height: 1.7;
+    margin: 0;
+    color: #89645f;
+    max-width: 56ch;
+}
+.wp-roles-label {
+    margin-top: 28px;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #a68f7c;
+}
+.wp-role-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+}
+.wp-role {
+    background: #f3e8d6;
+    color: #89645f;
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 999px;
+}
+.wp-detail-card {
+    background: #fff;
+    border-radius: 28px;
+    padding: 26px 26px 28px;
+    box-shadow: 0 16px 38px rgba(84,48,41,.1);
+    border: 1px solid #f3e8d6;
+}
+.wp-detail-title {
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #a68f7c;
+    margin-bottom: 18px;
+}
+.wp-detail-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f5ecdf;
+    font-size: 14.5px;
+}
+.wp-detail-k { color: #8a7565; }
+.wp-detail-v { font-weight: 700; text-align: right; }
+
+/* screenshots */
+.wp-shots-section {
+    padding: 8px 0 clamp(56px, 7vw, 88px);
+}
+.wp-shots-head {
+    margin-bottom: 0;
+    padding: 0 var(--wp-gutter) 18px;
+}
+.wp-shots-scroll {
+    gap: 18px;
+    padding: 0 var(--wp-gutter) 22px;
+    scroll-snap-type: x mandatory;
+}
+.wp-shot {
+    scroll-snap-align: start;
+    flex: 0 0 min(520px, 80vw);
+    aspect-ratio: 16 / 9;
+    border-radius: 24px;
+
+    background: rgb(137,100,95);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 14px 32px rgba(84,48,41,.12);
+}
+
+/* footer */
+.wp-game-footer {
+    background: #3d211c;
+    color: #f3e8d6;
+    border-radius: 44px 44px 0 0;
+    padding: clamp(40px, 5vw, 64px) var(--wp-gutter);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.wp-game-footer-back {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #f3e8d6;
+}
+.wp-game-copyright {
+    font-size: 13px;
+    color: rgba(243,232,214,.55);
+}
+
+
+/*=================================================================
+  Contact page (contactpage.html)
+=================================================================*/
+.wp-contact {
+    padding: clamp(120px, 16vh, 168px) var(--wp-gutter) clamp(64px, 8vw, 104px);
+}
+.wp-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: clamp(36px, 5vw, 72px);
+    align-items: start;
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+/* intro column */
+.wp-contact-title {
+    font-size: clamp(40px, 5.6vw, 72px);
+    line-height: .95;
+    margin: 0 0 18px;
+    letter-spacing: -1.5px;
+}
+.wp-contact-lead {
+    margin: 0 0 30px;
+    font-size: 17px;
+    line-height: 1.65;
+    color: #89645f;
+    max-width: 46ch;
+}
+.wp-contact-points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.wp-contact-point {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    color: #89645f;
+}
+.wp-contact-point a {
+    color: #89645f;
+    text-decoration: none;
+    font-weight: 600;
+}
+.wp-contact-point a:hover {
+    color: #dba876;
+}
+
+.wp-contact-socials {
+    margin-top: 8px;
+    padding-top: 20px;
+    border-top: 1px solid #ddc8b8;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.wp-contact-socials-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    color: #a68f7c;
+}
+.wp-contact-social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.wp-social-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px 9px 12px;
+    border-radius: 999px;
+    background: #fdf6e3;
+    border: 1.5px solid #ddc8b8;
+    color: #543029;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .16s ease, border-color .16s ease, transform .16s ease;
+}
+.wp-social-chip:hover {
+    background: #f2cead;
+    border-color: #f2cead;
+    transform: translateY(-1px);
+}
+.wp-social-icon {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    fill: currentColor;
+}
+
+.wp-label-optional {
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #a68f7c;
+}
+
+/* form card */
+.wp-contact-card {
+    background: #fff;
+    border-radius: 32px;
+    padding: clamp(26px, 3.4vw, 40px);
+    box-shadow: 0 18px 44px rgba(84,48,41,.12);
+    border: 1px solid #f3e8d6;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.wp-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+.wp-label {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    color: #89645f;
+}
+.wp-input {
+    font-family: inherit;
+    font-size: 15px;
+    color: #543029;
+    background: #fdf6e3;
+    border: 1.5px solid #ddc8b8;
+    border-radius: 16px;
+    padding: 13px 16px;
+    width: 100%;
+    transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+}
+.wp-input::placeholder {
+    color: #a68f7c;
+}
+.wp-input:focus {
+    outline: none;
+    background: #fff;
+    border-color: #f2cead;
+    box-shadow: 0 0 0 4px rgba(242,206,173,.22);
+}
+.wp-textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.55;
+}
+select.wp-input {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%235b6147' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+    cursor: pointer;
+}
+.wp-input--invalid {
+    border-color: #6f4a44;
+    background: #fff;
+}
+.wp-input--invalid:focus {
+    border-color: #6f4a44;
+    box-shadow: 0 0 0 4px rgba(137,100,95,.18);
+}
+.wp-error {
+    min-height: 15px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #6f4a44;
+}
+.wp-contact-submit {
+    justify-content: center;
+    padding: 15px 26px;
+    margin-top: 4px;
+    font-weight: 700;
+    font-size: 15.5px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 12px 28px rgba(242,206,173,.4);
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+.wp-contact-submit:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(242,206,173,.5);
+}
+.wp-contact-submit:disabled {
+    opacity: .7;
+    cursor: default;
+}
+.wp-contact-status {
+    margin: 2px 0 0;
+    min-height: 18px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #89645f;
+}
+.wp-contact-status--ok {
+    color: #89645f;
+}
+
+@media (max-width: 760px) {
+    .wp-contact-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/*=================================================================
+  Game Library page (gamelibrary.html)
+=================================================================*/
+.wp-library {
+    padding: clamp(120px, 16vh, 168px) var(--wp-gutter) clamp(72px, 9vw, 112px);
+    max-width: 1180px;
+    margin: 0 auto;
+}
+.wp-library-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: clamp(28px, 4vw, 44px);
+}
+.wp-library-title {
+    font-size: clamp(40px, 5.6vw, 72px);
+    line-height: .95;
+    margin: 0;
+    letter-spacing: -1.5px;
+}
+
+/* vertical, wrapping grid — auto-fills rows of cards */
+.wp-library-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: clamp(20px, 2.6vw, 30px);
+}
+/* card sizing override: the shared .wp-card is built for the horizontal
+   scroller (fixed 348px), so let it fill its grid cell here instead */
+.wp-library-grid .wp-card {
+    flex: initial;
+    width: 100%;
+}
+/* art is shared with the scroller (background-attachment: fixed); in a
+   multi-row grid that crops oddly, so pin each card's art to itself */
+.wp-library-grid .wp-card-art {
+    background-attachment: scroll !important;
+}
+
+
+/*---Other---*/
+::selection {
+    background: #f2cead;
+    color: #543029;
+}
+
+/*---Page animations---*/
+@keyframes wpbob {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(6px);
+    }
+}
+@keyframes wpfloat {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(3deg);
+    }
+}
+@keyframes wprise {
+    from {
+        opacity: 0;
+        transform: translateY(28px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes wpdrop {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+
+/*---Media Queries---*/
+
+@media (prefers-reduced-motion: reduce) {
+
+    .wp-hero-in,
+    .wp-reveal {
+        animation: none !important;
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
+/* ---- responsive navbar: shrink to fit, then stack on small screens ---- */
+@media (max-width: 760px) {
+    #wp-navheader {
+        top: 12px;
+        width: calc(100% - 20px);
+    }
+    #wp-navbar {
+        grid-template-columns: none;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        row-gap: 8px;
+        column-gap: 8px;
+        padding: 8px 12px;
+        border-radius: 20px;
+    }
+    #wp-logo {
+        order: -1;
+        flex-basis: 100%;
+        justify-content: center;
+    }
+    .wp-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+    }
+    .wp-navbutton {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    #wp-about-grid {
+        grid-template-columns: 1fr !important;
+        text-align: left;
+    }
+}
+
+@media (max-width: 420px) {
+    #wp-navbar {
+        padding: 7px 10px;
+        column-gap: 4px;
+    }
+    .wp-navbutton {
+        font-size: 11px;
+        padding: 5px 8px;
+    }
+    .wp-wordmark {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 560px) {
+    #wp-about-photo {
+        aspect-ratio: 16/10 !important;
+    }
+}
+
+/*=================================================================
+  Lightbox (design carousel — click a card to enlarge)
+=================================================================*/
+#wp-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5vh 5vw;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .22s ease;
+}
+#wp-lightbox.wp-lightbox-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+#wp-lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(61,33,28,.78);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+#wp-lightbox-img {
+    position: relative;
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 18px;
+    box-shadow: 0 30px 70px rgba(61,33,28,.5);
+    transform: scale(.96);
+    transition: transform .22s ease;
+}
+#wp-lightbox.wp-lightbox-open #wp-lightbox-img {
+    transform: scale(1);
+}
+#wp-lightbox-close {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: none;
+    background: rgba(255,255,255,.85);
+    color: #543029;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .16s ease, transform .16s ease;
+}
+#wp-lightbox-close:hover {
+    background: #fdf6e3;
+    transform: scale(1.06);
+}
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;  /* critical — lets clicks pass through to the page underneath */
+    z-index: 999;          /* above everything, including the lightbox's z-index: 200 */
+}
+/*=================================================================
+  Product promo — floating "click me" widget
+  (bottom-right corner icon, pops in, settles with a "Click me" label)
+=================================================================*/
+#wp-promo-widget {
+    position: fixed;
+    right: 26px;
+    bottom: 26px;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(50px) scale(.4) rotate(-15deg);
+    animation: wppromo-in .75s cubic-bezier(.34,1.56,.64,1) 1.1s forwards;
+}
+#wp-promo-widget .wp-promo-icon {
+    position: relative;
+    flex: none;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #f2cead, #e2a86b);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 10px 26px rgba(84,48,41,.4);
+}
+
+#wp-promo-widget .wp-promo-icon img {
+    width: 125%;
+    height: 125%;
+    object-fit: contain;
+}
+
+#wp-promo-widget .wp-promo-ring {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid rgba(242,206,173,.75);
+    opacity: 0;
+}
+/* the pulsing ring + label only kick in once the entrance animation is done */
+#wp-promo-widget.wp-promo-settled .wp-promo-ring {
+    animation: wppromo-pulse 2.2s ease-out infinite;
+}
+#wp-promo-widget .wp-promo-label {
+    background: #543029;
+    color: #fdf6e3;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .4px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    white-space: nowrap;
+    box-shadow: 0 8px 20px rgba(84,48,41,.3);
+    opacity: 0;
+    transform: translateX(8px);
+    transition: opacity .3s ease, transform .3s ease;
+}
+#wp-promo-widget.wp-promo-settled .wp-promo-label {
+    opacity: 1;
+    transform: translateX(0);
+}
+#wp-promo-widget:hover .wp-promo-icon {
+    transform: scale(1.08);
+}
+#wp-promo-widget .wp-promo-icon {
+    transition: transform .18s ease;
+}
+
+@keyframes wppromo-in {
+    0%   { opacity: 0; transform: translateY(50px) scale(.4) rotate(-15deg); }
+    55%  { opacity: 1; transform: translateY(-10px) scale(1.1) rotate(6deg); }
+    75%  { transform: translateY(4px) scale(.96) rotate(-3deg); }
+    100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+}
+@keyframes wppromo-pulse {
+    0%   { transform: scale(1);   opacity: .55; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #wp-promo-widget {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+    #wp-promo-widget .wp-promo-ring { animation: none; }
+}
+@media (max-width: 480px) {
+    #wp-promo-widget { right: 16px; bottom: 16px; gap: 8px; }
+    #wp-promo-widget .wp-promo-icon { width: 50px; height: 50px; font-size: 22px; }
+    #wp-promo-widget .wp-promo-label { font-size: 11.5px; padding: 7px 12px; }
+}
+
+/*=================================================================
+  Product promo — page (pages/promo.html)
+=================================================================*/
+.wp-promo-badge {
+    animation-delay: .25s;
+}
+.wp-promo-overview {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 90px var(--wp-gutter) 20px;
+}
+.wp-promo-overview p {
+    max-width: 640px;
+    font-size: 16.5px;
+    line-height: 1.65;
+    color: #6b4a41;
+}
+.wp-promo-shots {
+    padding: 40px var(--wp-gutter) 30px;
+}
+.wp-promo-shots-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1080px;
+    margin: 0 auto 18px;
+}
+.wp-promo-shots-nav {
+    display: flex;
+    gap: 10px;
+}
+.wp-promo-shots-nav button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid #c6b1a3;
+    background: #fdf6e3;
+    color: #543029;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background .16s ease, transform .16s ease;
+}
+.wp-promo-shots-nav button:hover {
+    background: #f5ecdf;
+    transform: translateY(-2px);
+}
+.wp-promo-carousel {
+    overflow: hidden;
+    padding: 4px 0 10px;
+    cursor: grab;
+    user-select: none;
+}
+.wp-promo-carousel-inner {
+    display: flex;
+    gap: 20px;
+    padding: 0 var(--wp-gutter);
+    will-change: transform;
+}
+.wp-promo-shot {
+    flex: 0 0 min(560px, 82vw);
+    aspect-ratio: 16 / 10;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #e7d3bb, #cfb192) center / cover no-repeat;
+    box-shadow: 0 18px 40px rgba(84,48,41,.18);
+}
+.wp-promo-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 18px;
+}
+.wp-promo-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d9c3ab;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background .16s ease, transform .16s ease;
+}
+.wp-promo-dot.is-active {
+    background: #543029;
+    transform: scale(1.3);
+}
+.wp-promo-cta {
+    text-align: center;
+    max-width: 720px;
+    margin: 40px auto 110px;
+    padding: 0 var(--wp-gutter);
+}
+.wp-promo-cta h2 {
+    font-size: clamp(26px, 4vw, 38px);
+    margin: 10px 0 14px;
+}
+.wp-promo-cta p {
+    color: #6b4a41;
+    font-size: 16px;
+    margin: 0 0 30px;
+}
+.wp-promo-cta-btn {
+    padding: 18px 36px;
+    font-size: 16px;
+    font-weight: 700;
+    box-shadow: 0 14px 30px rgba(84,48,41,.3);
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+.wp-promo-cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 38px rgba(84,48,41,.4);
+}
+@media (max-width: 600px) {
+    .wp-promo-shots-head { flex-direction: column; align-items: flex-start; gap: 14px; }
+}

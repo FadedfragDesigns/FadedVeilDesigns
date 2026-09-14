@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+
+  <canvas></canvas>
+  
+    <div id="wp-main">
+
+      <!-- ===== NAV BAR ===== -->
+      <header id="wp-navheader">
+        <div id="wp-navbar">
+
+          <nav class="wp-nav wp-navL">
+            <a href="#about" class="wp-navbutton">About</a>
+            <a href="#wp-games" class="wp-navbutton">Designs</a>
+          </nav>
+
+          <!-- logo -->
+          <a href="#" id="wp-logo">
+            <span class="wp-logomark">
+
+            </span>
+            <span class="wp-wordmark">FadedVeil</span>
+          </a>
+           
+          <nav class="wp-nav wp-navR">
+            <a href="pages/ppp.html" class="wp-navbutton">PPP</a>
+            <a href="pages/grim.html" class="wp-navbutton">Grim</a>
+            <a href="pages/contactpage.html" class="wp-navbutton">Contact</a>
+          </nav>
+
+        </div>
+      </header>
+
+      <!-- ===== HERO ===== -->
+      <section id="wp-hero">
+
+        <!-- Background -->
+        <div id="wp-hero-bg"></div>
+
+        <!-- left + bottom legibility scrim -->
+        <div class="wp-hero-scrim"></div>
+        <div class="wp-hero-scrim-btm"></div>
+
+        <!-- Bottom Left text (H2 + H1 + p + 2 buttons)-->
+        <div id="wp-hero-text">
+          
+          <h1 class="wp-hero-textin">
+            FadedVeil
+          </h1>
+          <p class="wp-hero-textin">
+            Video editor, Content Creator, Caster and Twitch Moderator          </p>
+          <div class="wp-hero-buttons wp-hero-textin">
+            <a href="pages/library.html" id="wp-hero-button1">
+              <span class="wp-ico wp-ico--22 wp-ico--dark">▶</span>
+              Projects
+            </a>
+            <a href="pages/contactpage.html" id="wp-hero-button2">
+              Contact me
+            </a>
+          </div>
+        </div>
+
+        <!-- scroll prompt 
+        <div id="wp-hero-scrollprompt">
+          SCROLL
+          <span class="wp-ico wp-ico--26 wp-ico--ring">↓</span>
+        </div> -->
+      </section>
+
+      <!-- ===== GAMES ===== -->
+      <section id="wp-games">
+
+        <div id="wp-games-bar"></div>
+
+        <!-- heading row -->
+        <div class="wp-reveal wp-games-head">
+          <div>
+            <div class="wp-eyebrow">
+              <span class="wp-eyebrow-dash"></span>
+              PORTFOLIO
+            </div>
+            <h2>Designs</h2>
+          </div>
+          <div class="wp-games-head-right">
+            <span class="wp-games-meta">auto-scrolling · drag to explore · click to enlarge</span>
+          </div>
+        </div>
+
+        <!-- side-scroll cards (auto-scroll + loop + drag) -->
+        <div class="wp-scroll wp-games-scroller wp-reveal">
+          <div class="wp-games-scroller-inner">
+
+          <template class="wp-card-template">
+            <a href="#" class="wp-card-link wp-card wp-design-card">
+              <!-- card key art -->
+              <div class="wp-card-art"></div>
+            </a>
+          </template>
+
+          </div>
+        </div>
+
+        <!-- ===== LIGHTBOX ===== -->
+        <div id="wp-lightbox">
+          <div id="wp-lightbox-backdrop"></div>
+          <button id="wp-lightbox-close" aria-label="Close">✕</button>
+          <img id="wp-lightbox-img" src="" alt="">
+        </div>
+
+        <!-- ===== ABOUT ===== -->
+        <div id="about" class="wp-reveal wp-about-wrap">
+          <div id="wp-about-grid">
+            <div>
+              <div class="wp-eyebrow">
+                <span class="wp-eyebrow-dash"></span>ABOUT ME
+              </div>
+              <h2 class="wp-heading wp-about-title">
+                FadedVeil
+              </h2>
+              <h3 class="wp-about-lead">
+                A quiet soul with a chaotic side. 🖤
+                Gamer, creator, esports enthusiast, and someone who finds comfort in the darker, more mysterious side of things.<br>
+                I am passionate about gaming, especially VALORANT and competitive esports, while also enjoying the creative side of the community — from designing graphics and building Discord spaces to helping teams and organisations grow
+              </h3>
+              <p class="wp-about-text">
+                I’m naturally intuitive, caring, and observant. I may not always be the loudest person in the room, but I notice more than I say. I value genuine connections, loyalty, communication, and people who make others feel safe enough to be themselves. <br>
+
+                Between late-night games, purple aesthetics, gothic vibes, questionable amounts of chaos, and trying to turn ideas into something real, I’m always working on becoming a better version of myself.<br>
+
+                Quiet energy. Dark aesthetic. Big heart. Endless ambition. 🖤💜
+              </p>
+              <a href="pages/contactpage.html" class="wp-btn wp-btn--dark wp-cta-about">Contact me
+                <span class="wp-ico wp-ico--22 wp-ico--yellow">→</span>
+              </a>
+            </div>
+            <div class="wp-about-col">
+              <div id="wp-about-photo"></div>
+              <div class="wp-stat-row">
+                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== FOOTER ===== -->
+      <footer class="wp-footer">
+        <div class="wp-reveal wp-footer-top">
+          <div class="wp-footer-brand">
+            <div class="wp-footer-logo">
+              <span class="wp-wordmark">Fadedveil</span>
+            </div>
+            <p class="wp-footer-tag">Streaming since 2022</p>
+          </div>
+          <div class="wp-footer-cols">
+            <div class="wp-footer-col">
+              <span class="wp-footer-coltitle">All Links</span>
+                <a href="https://linktr.ee/cece.nexi" class="wp-footer-link">Linktree</a>
+            </div>
+            <div class="wp-footer-col">
+              <span class="wp-footer-coltitle">FOLLOW</span>
+              <a href="https://www.twitch.tv/itz_fadedfrag" class="wp-footer-link">TWITCH</a>
+              <a href="https://www.tiktok.com/@fadedfrag" class="wp-footer-link">TIKTOK</a>
+              <a href="https://www.instagram.com/itz__fadedfrag" class="wp-footer-link">INSTAGRAM</a>
+              <a href="https://discord.com/invite/p7My4F4Hnc" class="wp-footer-link">DISCORD</a>
+            </div>
+          </div>
+        </div>
+        <div class="wp-footer-bottom">
+          <span>© 2026 FadedVeil. All rights reserved.</span>
+          <span class="wp-footer-legal"><a href="#">Privacy</a><a href="#">Terms</a></span>
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- ===== PRODUCT PROMO WIDGET ===== -->
+    <a href="pages/promo.html" id="wp-promo-widget" aria-label="Check out our new product">
+      <span class="wp-promo-icon">
+        <span class="wp-promo-ring"></span>
+        <img src="assets/promo_assets/icon.png" alt="">
+      </span>
+      <span class="wp-promo-label">Click me</span>
+    </a>
+
+    <script src="scripts/home.js" type="module"></script>
+    <script src="scripts/data.js" type="module"></script>
+    <script src="scripts/cursor.js" type="module"></script>
+    <script src="scripts/promo-widget.js" type="module"></script>
+
+</body>
+
+</html>

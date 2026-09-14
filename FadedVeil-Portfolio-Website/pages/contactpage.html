@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+
+  <div class="wp-main">
+
+    <!-- nav -->
+    <header id="wp-navheader">
+      <div id="wp-navbar">
+        <a href="../index.html" class="wp-navlink-back wp-navL">
+          <span class="wp-ico wp-ico--26 wp-ico--light">←</span>
+          Home
+        </a>
+        <a href="../index.html" id="wp-logo">
+          <span class="wp-wordmark">FadedVeil</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- contact form -->
+    <section class="wp-contact">
+      <div class="wp-contact-grid">
+
+        <!-- intro column -->
+        <div class="wp-contact-intro">
+          <span class="wp-eyebrow"><span class="wp-eyebrow-dash"></span>GET IN TOUCH</span>
+          <h1 class="wp-heading wp-contact-title">Let's collaborate</h1>
+          <p class="wp-contact-lead">
+            Brand partnership, a collab idea, or just want to say hi?
+            Drop a message below and I'll get back to you.
+          </p>
+
+          <ul class="wp-contact-points">
+            <li class="wp-contact-point">
+              <span class="wp-ico wp-ico--24 wp-ico--dark">✉</span>
+              <a href="mailto:dewydroplet15@Gmail.com">dewydroplet15@Gmail.com</a>
+            </li>
+            <li class="wp-contact-point">
+              <span class="wp-ico wp-ico--24 wp-ico--light">⏱</span>
+              <span>Usually replies within 2 business days</span>
+            </li>
+          </ul>
+
+          <div class="wp-contact-socials">
+            <span class="wp-contact-socials-label">Find me elsewhere</span>
+            <div class="wp-contact-social-links">
+
+              <a href="https://www.twitch.tv/itz_fadedfrag" target="_blank" rel="noopener" class="wp-social-chip">
+                <svg viewBox="0 0 24 24" class="wp-social-icon" aria-hidden="true">
+                  <path d="M5 3 3 7v13h5v3l3-3h4l6-6V3H5Zm14 9-3 3h-4l-3 3v-3H6V5h13v7Z"/>
+                  <path d="M15 7h2v5h-2zM10 7h2v5h-2z"/>
+                </svg>
+                <span>Twitch</span>
+              </a>
+
+              <a href="https://www.tiktok.com/@fadedfrag" target="_blank" rel="noopener" class="wp-social-chip">
+                <svg viewBox="0 0 24 24" class="wp-social-icon" aria-hidden="true">
+                  <path d="M16 3c.4 2.2 2 3.7 4 3.9V10c-1.5 0-2.9-.5-4-1.3V15a6 6 0 1 1-6-6c.3 0 .7 0 1 .1v3.1a3 3 0 1 0 2 2.8V3h3Z"/>
+                </svg>
+                <span>TikTok</span>
+              </a>
+
+              <a href="https://www.instagram.com/itz__fadedfrag" target="_blank" rel="noopener" class="wp-social-chip">
+                <svg viewBox="0 0 24 24" class="wp-social-icon" aria-hidden="true">
+                  <rect x="3.5" y="3.5" width="17" height="17" rx="5"/>
+                  <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                  <circle cx="17" cy="7" r="1.1"/>
+                </svg>
+                <span>Instagram</span>
+              </a>
+
+              <a href="https://discord.com/invite/p7My4F4Hnc" target="_blank" rel="noopener" class="wp-social-chip">
+                <svg viewBox="0 0 24 24" class="wp-social-icon" aria-hidden="true">
+                  <path d="M8 5.5c-2.8.4-4.4 1.4-4.4 1.4S1.5 10.3 1.5 16.4c0 0 1.7 2.2 5.4 2.3l1-1.6c-.9-.3-1.8-.7-2.7-1.4.2.2.5.3.7.5 3.3 1.7 7.5 1.7 10.8 0 .2-.1.5-.3.7-.5-.9.7-1.8 1.1-2.7 1.4l1 1.6c3.7-.1 5.4-2.3 5.4-2.3 0-6.1-2.1-9.5-2.1-9.5S18.8 5.9 16 5.5l-.3.6c2.4.6 3.6 1.5 3.6 1.5-1.9-1-3.7-1.5-5.5-1.7-1.3-.1-2.6-.1-3.9 0-1.8.2-3.6.7-5.5 1.7 0 0 1.2-.9 3.6-1.5L8 5.5Zm.3 4.8c.9 0 1.7.8 1.7 1.8s-.8 1.8-1.7 1.8c-1 0-1.7-.8-1.7-1.8s.7-1.8 1.7-1.8Zm7.4 0c1 0 1.7.8 1.7 1.8s-.7 1.8-1.7 1.8c-.9 0-1.7-.8-1.7-1.8s.8-1.8 1.7-1.8Z"/>
+                </svg>
+                <span>Discord</span>
+              </a>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- form column -->
+        <form class="wp-contact-card" id="wp-contact-form" novalidate>
+          <div class="wp-field">
+            <label class="wp-label" for="wp-name">Name</label>
+            <input class="wp-input" id="wp-name" name="name" type="text" placeholder="Your name"
+              autocomplete="name" required>
+            <span class="wp-error" data-error-for="name"></span>
+          </div>
+
+          <div class="wp-field">
+            <label class="wp-label" for="wp-email">Email</label>
+            <input class="wp-input" id="wp-email" name="email" type="email" placeholder="you@example.com"
+              autocomplete="email" required>
+            <span class="wp-error" data-error-for="email"></span>
+          </div>
+
+          <div class="wp-field">
+            <label class="wp-label" for="wp-company">Brand / Company <span class="wp-label-optional">(optional)</span></label>
+            <input class="wp-input" id="wp-company" name="company" type="text" placeholder="Who you're repping"
+              autocomplete="organization">
+          </div>
+
+          <div class="wp-field">
+            <label class="wp-label" for="wp-subject">Subject</label>
+            <select class="wp-input" id="wp-subject" name="subject" required>
+              <option value="" disabled selected>Choose a topic…</option>
+              <option value="sponsorship">Sponsorship / paid partnership</option>
+              <option value="collab">Collab idea</option>
+              <option value="design-work">Graphic design work / commission</option>
+              <option value="press">Press / media</option>
+              <option value="fan">Just saying hi</option>
+              <option value="other">Something else</option>
+            </select>
+            <span class="wp-error" data-error-for="subject"></span>
+          </div>
+
+          <div class="wp-field">
+            <label class="wp-label" for="wp-message">Message</label>
+            <textarea class="wp-input wp-textarea" id="wp-message" name="message" rows="5"
+              placeholder="Tell me what's on your mind…" required></textarea>
+            <span class="wp-error" data-error-for="message"></span>
+          </div>
+
+          <button class="wp-btn wp-btn--yellow wp-contact-submit" type="submit">
+            Send message
+            <span class="wp-ico wp-ico--22 wp-ico--dark">→</span>
+          </button>
+
+          <p class="wp-contact-status" id="wp-contact-status" role="status" aria-live="polite"></p>
+        </form>
+
+      </div>
+    </section>
+
+
+    <!-- footer -->
+    <footer class="wp-game-footer">
+      <a href="../index.html" class="wp-game-footer-back">
+        <span class="wp-ico wp-ico--22 wp-ico--yellow">←</span>
+        <span class="wp-wordmark">
+          FadedVeil
+        </span>
+      </a>
+      <span class="wp-game-copyright">© 2026 FadedVeil.</span>
+    </footer>
+
+  </div>
+
+  <canvas></canvas>
+
+  <!-- ===== PRODUCT PROMO WIDGET ===== -->
+  <a href="promo.html" id="wp-promo-widget" aria-label="Check out our new product">
+    <span class="wp-promo-icon">
+      <span class="wp-promo-ring"></span>
+      <img src="../assets/promo_assets/icon.png" alt="">
+    </span>
+    <span class="wp-promo-label">Click me</span>
+  </a>
+
+  <script src="../scripts/contact.js"></script>
+  <script src="../scripts/cursor.js" type="module"></script>
+  <script src="../scripts/promo-widget.js" type="module"></script>
+
+</body>
+
+</html>
