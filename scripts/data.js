@@ -60,7 +60,6 @@ export const designs =
 { id: "08", alt: "Design piece 8", img: "design_art/design-08.png", full: "design_art/design-08.png" },
 { id: "09", alt: "Design piece 9", img: "design_art/design-09.png", full: "design_art/design-09.png" },
 { id: "10", alt: "Design piece 10", img: "design_art/design-10.png", full: "design_art/design-10.png" },
-{ id: "11", alt: "Design piece 11", img: "design_art/design-11.png", full: "design_art/design-11.png" },
 { id: "12", alt: "Design piece 12", img: "design_art/design-12.png", full: "design_art/design-12.png" },
 { id: "13", alt: "Design piece 13", img: "design_art/design-13.png", full: "design_art/design-13.png" },
 { id: "14", alt: "Design piece 14", img: "design_art/design-14.png", full: "design_art/design-14.png" },
